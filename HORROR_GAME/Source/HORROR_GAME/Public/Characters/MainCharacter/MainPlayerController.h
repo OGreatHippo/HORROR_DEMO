@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "EnhancedInputSubsystems.h"
 #include "MainPlayerController.generated.h"
 
 class UInputMappingContext;
