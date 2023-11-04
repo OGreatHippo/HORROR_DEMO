@@ -4,6 +4,8 @@
 #include "Components/InputComponent.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Blueprint/UserWidget.h"
+#include "HUD/MyUserWidget.h"
 
 AMainPlayerController::AMainPlayerController()
 {
@@ -13,6 +15,11 @@ AMainPlayerController::AMainPlayerController()
 	moveAction = nullptr;
 	sprintAction = nullptr;
 	isSprinting = false;
+
+	/* HUD */
+
+	playerHUDClass = nullptr;
+	playerHUD = nullptr;
 }
 
 void AMainPlayerController::Tick(float DeltaTime)
@@ -45,6 +52,26 @@ void AMainPlayerController::BeginPlay()
 
 	character = Cast<AMainCharacter>(GetPawn());
 	movementComponent = character->GetCharacterMovement();
+
+	if (IsLocalPlayerController() && playerHUDClass)
+	{
+		playerHUD = CreateWidget<UMyUserWidget>(this, playerHUDClass);
+		check(playerHUD);
+		playerHUD->AddToPlayerScreen();
+		playerHUD->SetStamina(character->stamina);
+		playerHUD->SetColour(isExhausted);
+	}
+}
+
+void AMainPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (playerHUD)
+	{
+		playerHUD->RemoveFromParent();
+		playerHUD = nullptr;
+	}
+
+	Super::EndPlay(EndPlayReason);
 }
 
 void AMainPlayerController::Move(const FInputActionValue& value)
@@ -86,21 +113,25 @@ void AMainPlayerController::StaminaUsage(float deltaTime)
 		if (isSprinting && character->stamina > 0 && !isExhausted)
 		{
 			character->stamina -= 15 * deltaTime;
+			playerHUD->SetStamina(character->stamina);
 
 			if (character->stamina <= 0)
 			{
 				StopSprinting();
 				isExhausted = true;
+				playerHUD->SetColour(isExhausted);
 			}
 		}
 
 		else if (!isSprinting && character->stamina < 100)
 		{
 			character->stamina += 5 * deltaTime;
+			playerHUD->SetStamina(character->stamina);
 
 			if (character->stamina >= 30)
 			{
 				isExhausted = false;
+				playerHUD->SetColour(isExhausted);
 			}
 		}
 	}

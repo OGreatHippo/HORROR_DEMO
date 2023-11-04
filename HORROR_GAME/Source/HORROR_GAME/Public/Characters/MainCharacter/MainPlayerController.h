@@ -25,6 +25,8 @@ protected:
 
 	virtual void BeginPlay();
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 		UInputMappingContext* playerInputContext;
 
@@ -38,6 +40,14 @@ protected:
 
 	void Sprint();
 	void StopSprinting();
+
+	/* HUD */
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UMyUserWidget> playerHUDClass;
+
+	UPROPERTY()
+		class UMyUserWidget* playerHUD;
 
 private:
 	AMainCharacter* character;
