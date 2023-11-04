@@ -17,6 +17,9 @@ class HORROR_GAME_API AMainPlayerController : public APlayerController
 public:
 	AMainPlayerController();
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 protected:
 	virtual void SetupInputComponent() override;
 
@@ -39,4 +42,8 @@ protected:
 private:
 	AMainCharacter* character;
 	UCharacterMovementComponent* movementComponent;
+
+	bool isSprinting;
+
+	void StaminaUsage(float deltaTime);
 };

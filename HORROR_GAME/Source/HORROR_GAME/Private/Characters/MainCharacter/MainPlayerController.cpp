@@ -8,6 +8,18 @@
 AMainPlayerController::AMainPlayerController()
 {
 	character = nullptr;
+	movementComponent = nullptr;
+	playerInputContext = nullptr;
+	moveAction = nullptr;
+	sprintAction = nullptr;
+	isSprinting = false;
+}
+
+void AMainPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	StaminaUsage(DeltaTime);
 }
 
 void AMainPlayerController::SetupInputComponent()
@@ -50,7 +62,11 @@ void AMainPlayerController::Sprint()
 {
 	if (character)
 	{
-		movementComponent->MaxWalkSpeed = 1000.0f;
+		if (character->stamina > 0)
+		{
+			movementComponent->MaxWalkSpeed = 1000.0f;
+			isSprinting = true;
+		}
 	}
 }
 
@@ -59,6 +75,28 @@ void AMainPlayerController::StopSprinting()
 	if (character)
 	{
 		movementComponent->MaxWalkSpeed = 600.0f;
+		isSprinting = false;
+	}
+}
+
+void AMainPlayerController::StaminaUsage(float deltaTime)
+{
+	if (character)
+	{
+		if (isSprinting && character->stamina > 0)
+		{
+			character->stamina -= 5 * deltaTime;
+
+			if (character->stamina <= 0)
+			{
+				StopSprinting();
+			}
+		}
+
+		else if (!isSprinting && character->stamina < 100)
+		{
+			character->stamina += 2 * deltaTime;
+		}
 	}
 }
 
