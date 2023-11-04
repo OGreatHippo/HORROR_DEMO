@@ -83,19 +83,25 @@ void AMainPlayerController::StaminaUsage(float deltaTime)
 {
 	if (character)
 	{
-		if (isSprinting && character->stamina > 0)
+		if (isSprinting && character->stamina > 0 && !isExhaused)
 		{
 			character->stamina -= 5 * deltaTime;
 
 			if (character->stamina <= 0)
 			{
 				StopSprinting();
+				isExhaused = true;
 			}
 		}
 
 		else if (!isSprinting && character->stamina < 100)
 		{
 			character->stamina += 2 * deltaTime;
+
+			if (character->stamina >= 30)
+			{
+				isExhaused = false;
+			}
 		}
 	}
 }

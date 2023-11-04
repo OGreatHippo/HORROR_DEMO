@@ -44,6 +44,7 @@ private:
 	UCharacterMovementComponent* movementComponent;
 
 	bool isSprinting;
+	bool isExhausted;
 
 	void StaminaUsage(float deltaTime);
 };
