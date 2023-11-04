@@ -3,9 +3,11 @@
 #include "EnhancedInputComponent.h"
 #include "Components/InputComponent.h"
 #include "Engine/LocalPlayer.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AMainPlayerController::AMainPlayerController()
 {
+	character = nullptr;
 }
 
 void AMainPlayerController::SetupInputComponent()
@@ -15,6 +17,8 @@ void AMainPlayerController::SetupInputComponent()
 	if (UEnhancedInputComponent* enhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		enhancedInputComponent->BindAction(moveAction, ETriggerEvent::Triggered, this, &AMainPlayerController::Move);
+		enhancedInputComponent->BindAction(sprintAction, ETriggerEvent::Triggered, this, &AMainPlayerController::Sprint);
+		enhancedInputComponent->BindAction(sprintAction, ETriggerEvent::Completed, this, &AMainPlayerController::StopSprinting);
 	}
 }
 
@@ -26,18 +30,35 @@ void AMainPlayerController::BeginPlay()
 	{
 		subsystem->AddMappingContext(playerInputContext, 0);
 	}
+
+	character = Cast<AMainCharacter>(GetPawn());
+	movementComponent = character->GetCharacterMovement();
 }
 
 void AMainPlayerController::Move(const FInputActionValue& value)
 {
 	const FVector2D movementVector = value.Get<FVector2D>();
 
-	APawn* controlledPawn = GetPawn();
+	const FVector forward = character->GetActorForwardVector();
+	character->AddMovementInput(forward, movementVector.Y);
 
-	const FVector forward = controlledPawn->GetActorForwardVector();
-	controlledPawn->AddMovementInput(forward, movementVector.Y);
+	const FVector right = character->GetActorRightVector();
+	character->AddMovementInput(right, movementVector.X);
+}
 
-	const FVector right = controlledPawn->GetActorRightVector();
-	controlledPawn->AddMovementInput(right, movementVector.X);	
+void AMainPlayerController::Sprint()
+{
+	if (character)
+	{
+		movementComponent->MaxWalkSpeed = 1000.0f;
+	}
+}
+
+void AMainPlayerController::StopSprinting()
+{
+	if (character)
+	{
+		movementComponent->MaxWalkSpeed = 600.0f;
+	}
 }
 

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "EnhancedInputSubsystems.h"
+#include "Characters/MainCharacter/MainCharacter.h"
 #include "MainPlayerController.generated.h"
 
 class UInputMappingContext;
@@ -27,5 +28,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 		UInputAction* moveAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+		UInputAction* sprintAction;
+
 	void Move(const FInputActionValue& value);
+
+	void Sprint();
+	void StopSprinting();
+
+private:
+	AMainCharacter* character;
+	UCharacterMovementComponent* movementComponent;
 };
