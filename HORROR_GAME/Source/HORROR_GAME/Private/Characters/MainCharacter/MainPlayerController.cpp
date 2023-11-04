@@ -62,7 +62,7 @@ void AMainPlayerController::Sprint()
 {
 	if (character)
 	{
-		if (character->stamina > 0)
+		if (character->stamina > 0 && !isExhausted)
 		{
 			movementComponent->MaxWalkSpeed = 1000.0f;
 			isSprinting = true;
@@ -85,7 +85,7 @@ void AMainPlayerController::StaminaUsage(float deltaTime)
 	{
 		if (isSprinting && character->stamina > 0 && !isExhausted)
 		{
-			character->stamina -= 5 * deltaTime;
+			character->stamina -= 15 * deltaTime;
 
 			if (character->stamina <= 0)
 			{
@@ -96,7 +96,7 @@ void AMainPlayerController::StaminaUsage(float deltaTime)
 
 		else if (!isSprinting && character->stamina < 100)
 		{
-			character->stamina += 2 * deltaTime;
+			character->stamina += 5 * deltaTime;
 
 			if (character->stamina >= 30)
 			{
