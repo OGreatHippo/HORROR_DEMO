@@ -3,7 +3,6 @@
 
 APlayerCamera::APlayerCamera()
 {
-	//GetCameraComponent();
 }
 
 void APlayerCamera::BeginPlay()
