@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Camera/CameraActor.h"
+#include "Components/BoxComponent.h"
 #include "PlayerCamera.generated.h"
 
 UCLASS()
@@ -16,4 +17,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera)
 		bool startingCamera;
+
+	UPROPERTY(VisibleAnywhere)
+		UBoxComponent* boxCollider;
 };

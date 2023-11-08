@@ -3,10 +3,18 @@
 
 APlayerCamera::APlayerCamera()
 {
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void APlayerCamera::BeginPlay()
 {
+	boxCollider = FindComponentByClass<UBoxComponent>();
+
+	if (boxCollider)
+	{
+
+	}
+
 	if (startingCamera)
 	{
 		APlayerController* playerController = Cast<APlayerController>(GetWorld()->GetFirstPlayerController());
