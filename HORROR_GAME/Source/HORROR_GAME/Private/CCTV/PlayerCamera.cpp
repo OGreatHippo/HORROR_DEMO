@@ -3,7 +3,6 @@
 
 APlayerCamera::APlayerCamera()
 {
-	PrimaryActorTick.bCanEverTick = true;
 }
 
 void APlayerCamera::BeginPlay()
@@ -12,7 +11,6 @@ void APlayerCamera::BeginPlay()
 
 	if (boxCollider)
 	{
-
 	}
 
 	if (startingCamera)
@@ -25,4 +23,8 @@ void APlayerCamera::BeginPlay()
 			playerController->SetViewTarget(this, transParams);
 		}
 	}
+}
+
+void APlayerCamera::ChangeCamera()
+{
 }

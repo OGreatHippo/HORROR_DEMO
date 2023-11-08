@@ -18,6 +18,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera)
 		bool startingCamera;
 
-	UPROPERTY(VisibleAnywhere)
-		UBoxComponent* boxCollider;
+	class UBoxComponent* boxCollider;
+
+	void ChangeCamera();
 };
