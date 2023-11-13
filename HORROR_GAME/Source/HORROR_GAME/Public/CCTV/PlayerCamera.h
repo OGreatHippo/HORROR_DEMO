@@ -15,6 +15,8 @@ public:
 
 	virtual void BeginPlay() override;
 
+	FViewTargetTransitionParams transParams;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera)
 		bool startingCamera;
 

@@ -1,5 +1,6 @@
 #include "CCTV/PlayerCamera.h"
 #include "Camera/CameraComponent.h"
+#include "Characters/MainCharacter/MainCharacter.h"
 #include "Components/BoxComponent.h"
 
 APlayerCamera::APlayerCamera()
@@ -21,7 +22,6 @@ void APlayerCamera::BeginPlay()
 	{
 		if (playerController)
 		{
-			FViewTargetTransitionParams transParams;
 			playerController->SetViewTarget(this, transParams);
 		}
 	}
@@ -29,5 +29,13 @@ void APlayerCamera::BeginPlay()
 
 void APlayerCamera::OnBoxColliderOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("sup"));
+	AMainCharacter* playerCharacter = Cast<AMainCharacter>(OtherActor);
+
+	UE_LOG(LogTemp, Warning, TEXT("Collision"));
+
+	if (playerCharacter)
+	{
+		playerController->SetViewTargetWithBlend(this, 0);
+		UE_LOG(LogTemp, Warning, TEXT("Change camera"));
+	}
 }
