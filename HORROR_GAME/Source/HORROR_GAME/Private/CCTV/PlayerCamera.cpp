@@ -31,11 +31,8 @@ void APlayerCamera::OnBoxColliderOverlap(UPrimitiveComponent* OverlappedComponen
 {
 	AMainCharacter* playerCharacter = Cast<AMainCharacter>(OtherActor);
 
-	UE_LOG(LogTemp, Warning, TEXT("Collision"));
-
 	if (playerCharacter)
 	{
 		playerController->SetViewTargetWithBlend(this, 0);
-		UE_LOG(LogTemp, Warning, TEXT("Change camera"));
 	}
 }

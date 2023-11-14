@@ -23,4 +23,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stamina)
 	float stamina;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		float speed;
 };
